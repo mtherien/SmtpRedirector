@@ -17,9 +17,9 @@ using SmtpRedirector.Server.Interfaces;
 
 namespace SmtpRedirector.Server.Smtp
 {
-    public class SmtpClientSession
+    public class SmtpClientSession : ISmtpClientSession
     {
-        private SmtpConfiguration _configuration;
+        private ISmtpConfiguration _configuration;
         private ISocketClient _client;
         private readonly ILogger _logger;
         private readonly IMailHandler _mailHandler;
@@ -33,7 +33,7 @@ namespace SmtpRedirector.Server.Smtp
         }
 
 
-        public Guid Init(ISocketClient client, SmtpConfiguration configuration)
+        public Guid Init(ISocketClient client, ISmtpConfiguration configuration)
         {
             if (client == null) throw new ArgumentNullException("client");
             if (configuration == null) throw new ArgumentNullException("configuration");

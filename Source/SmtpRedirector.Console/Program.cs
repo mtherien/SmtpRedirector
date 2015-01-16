@@ -17,16 +17,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac;
 using SmtpRedirector.Server;
+using SmtpRedirector.Server.Interfaces;
 using SmtpRedirector.Server.Smtp;
 
 namespace SmtpRedirector.Console
 {
     class Program
     {
+        private static IContainer Container { get; set; }
+
         static void Main(string[] args)
         {
-            var server = new SmtpListener(new SmtpConfiguration(), new ConsoleLogger(), new MailHandler());
+            var builder = new ContainerBuilder();
+            builder.RegisterModule(new Bootstrap());
+            builder.RegisterType<ConsoleLogger>().As<ILogger>();
+            Container = builder.Build();
+
+            var server = Container.Resolve<ISmtpListener>();
             server.Start();
 
             System.Console.WriteLine("SMTP Server running.  Enter exit to stop");

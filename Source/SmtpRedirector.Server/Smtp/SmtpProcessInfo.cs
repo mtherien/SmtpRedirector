@@ -19,9 +19,9 @@ namespace SmtpRedirector.Server.Smtp
     internal class SmtpProcessInfo
     {
         private Thread _processThread = null;
-        private readonly SmtpClientSession _clientSession;
+        private readonly ISmtpClientSession _clientSession;
 
-        public SmtpProcessInfo(SmtpClientSession clientSession)
+        public SmtpProcessInfo(ISmtpClientSession clientSession)
         {
             _clientSession = clientSession;
         }

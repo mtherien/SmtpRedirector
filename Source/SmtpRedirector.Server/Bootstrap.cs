@@ -11,12 +11,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Autofac;
 using SmtpRedirector.Server.Interfaces;
+using SmtpRedirector.Server.Smtp;
 
-namespace SmtpRedirector.Server.Smtp
+namespace SmtpRedirector.Server
 {
-    public class SmtpConfiguration : ISmtpConfiguration
+    public class Bootstrap : Autofac.Module
     {
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterType<SmtpListener>().As<ISmtpListener>();
+            builder.RegisterType<MailHandler>().As<IMailHandler>();
+            builder.RegisterType<SmtpConfiguration>().As<ISmtpConfiguration>();
+        }
     }
 }

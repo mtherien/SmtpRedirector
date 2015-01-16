@@ -22,16 +22,16 @@ using SmtpRedirector.Server.Sockets;
 
 namespace SmtpRedirector.Server.Smtp
 {
-    public class SmtpListener
+    public class SmtpListener : ISmtpListener
     {
-        private readonly SmtpConfiguration _configuration;
+        private readonly ISmtpConfiguration _configuration;
         private readonly ILogger _logger;
         private readonly IMailHandler _mailHandler;
         private readonly List<SmtpProcessInfo> _processes = new List<SmtpProcessInfo>();
         private bool _stopProcessing = false;
         private TcpListener _listener;
 
-        public SmtpListener(SmtpConfiguration configuration, ILogger logger, IMailHandler mailHandler)
+        public SmtpListener(ISmtpConfiguration configuration, ILogger logger, IMailHandler mailHandler)
         {
             _configuration = configuration;
             _logger = logger;
@@ -67,7 +67,7 @@ namespace SmtpRedirector.Server.Smtp
             }
         }
 
-        private void StartProcess(SmtpClientSession clientSession)
+        private void StartProcess(ISmtpClientSession clientSession)
         {
             var processInfo = new SmtpProcessInfo(clientSession);
             _processes.Add(processInfo);
