@@ -12,14 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Net;
-
 namespace SmtpRedirector.Server.Interfaces
 {
-    public interface ILogger
+    public interface IMailHandler
     {
-        void Info(string format, params object[] parameters);
-        void Info(string message);
+        void HandleRequest(string commandParameters, ISocketClient client);
     }
 }

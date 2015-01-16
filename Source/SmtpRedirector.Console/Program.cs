@@ -17,6 +17,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SmtpRedirector.Server;
+using SmtpRedirector.Server.Smtp;
 
 namespace SmtpRedirector.Console
 {
@@ -24,6 +26,26 @@ namespace SmtpRedirector.Console
     {
         static void Main(string[] args)
         {
+            var server = new SmtpListener(new SmtpConfiguration(), new ConsoleLogger(), new MailHandler());
+            server.Start();
+
+            System.Console.WriteLine("SMTP Server running.  Enter exit to stop");
+
+            while (true)
+            {
+                var command = System.Console.ReadLine();
+                if (command.Equals("exit", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    break;
+                }
+                else
+                {
+                    System.Console.WriteLine("!! Invalid command");
+                }
+            }
+
+            server.Stop();
+
         }
     }
 }

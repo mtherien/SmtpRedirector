@@ -11,15 +11,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 using System;
-using System.Net;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SmtpRedirector.Server.Interfaces;
 
-namespace SmtpRedirector.Server.Interfaces
+namespace SmtpRedirector.Server.Smtp
 {
-    public interface ILogger
+    public class MailHandler : IMailHandler
     {
-        void Info(string format, params object[] parameters);
-        void Info(string message);
+        public void HandleRequest(string commandParameters, ISocketClient client)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

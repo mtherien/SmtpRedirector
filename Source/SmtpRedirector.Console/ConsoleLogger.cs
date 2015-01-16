@@ -11,15 +11,30 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 using System;
-using System.Net;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SmtpRedirector.Server.Interfaces;
 
-namespace SmtpRedirector.Server.Interfaces
+namespace SmtpRedirector.Console
 {
-    public interface ILogger
+    public class ConsoleLogger : ILogger
     {
-        void Info(string format, params object[] parameters);
-        void Info(string message);
+        private string _lock = "lock";
+
+        public void Info(string format, params object[] parameters)
+        {
+            Info(string.Format(format,parameters));
+        }
+
+        public void Info(string message)
+        {
+            lock (_lock)
+            {
+                System.Console.WriteLine("{0:yy-MM-dd HH:mm:ss.ffff} - {1}", DateTime.Now, message);
+            }
+        }
     }
 }
