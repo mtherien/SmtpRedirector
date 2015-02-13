@@ -22,9 +22,11 @@ namespace SmtpRedirector.Server.Smtp
 {
     public class MailHandler : IMailHandler
     {
-        public void HandleRequest(string commandParameters, ISocketClient client)
+        public void StartMailRequest(string commandParameters, ISocketClient client)
         {
             throw new NotImplementedException();
         }
     }
+
+
 }

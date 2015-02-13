@@ -123,7 +123,7 @@ namespace SmtpRedirector.Server.Smtp
                 _client.Write("503 HELO/EHLO Command not issued");
                 return;
             }
-            _mailHandler.HandleRequest(commandParameter, _client);
+            _mailHandler.StartMailRequest(commandParameter, _client);
         }
 
         private void HandleReset()

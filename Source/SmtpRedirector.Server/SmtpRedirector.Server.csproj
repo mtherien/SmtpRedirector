@@ -61,6 +61,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrap.cs" />
+    <Compile Include="Data\EmailAddress.cs" />
+    <Compile Include="Data\MailMessage.cs" />
     <Compile Include="Data\SmtpContext.cs" />
     <Compile Include="Data\SmtpContextFactory.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
