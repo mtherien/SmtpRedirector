@@ -16,6 +16,6 @@ namespace SmtpRedirector.Server.Interfaces
 {
     public interface IMailHandler
     {
-        void StartMailRequest(string commandParameters, ISocketClient client);
+        void StartMailRequest(string mailCommandParameters, ISocketClient client);
     }
 }

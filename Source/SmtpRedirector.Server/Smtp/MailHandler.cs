@@ -16,15 +16,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SmtpRedirector.Server.Data;
 using SmtpRedirector.Server.Interfaces;
 
 namespace SmtpRedirector.Server.Smtp
 {
     public class MailHandler : IMailHandler
     {
-        public void StartMailRequest(string commandParameters, ISocketClient client)
+        private MailMessage _mailMessage = null;
+
+        public void StartMailRequest(string mailCommandParameters, ISocketClient client)
         {
-            throw new NotImplementedException();
+            EmailAddress emailAddress = null;
+            try
+            {
+                emailAddress = new EmailAddress(mailCommandParameters);
+            }
+            catch (ArgumentException argumentException)
+            {
+                Console.WriteLine(argumentException);
+                throw;
+            }
+
+            _mailMessage = new MailMessage(emailAddress);
         }
     }
 
