@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text.RegularExpressions;
+using Autofac;
 
 namespace SmtpRedirector.Server.Data
 {
@@ -14,14 +16,24 @@ namespace SmtpRedirector.Server.Data
 
         private void ParseString(string emailString)
         {
-            if (emailString.Trim().StartsWith("<") && emailString.Trim().EndsWith(">"))
+            var myRegex = new Regex(@"^<(.*)> ?(.*)?", RegexOptions.None);
+
+            var groups = myRegex.Match(emailString).Groups;
+
+            if (!groups[1].Success)
             {
-                _email = emailString.Trim().TrimStart('<').TrimEnd('>');
-                _displayName = string.Empty;
-                return;
+                throw new ArgumentException("Email address was an invalid format");
             }
-            
-            throw new ArgumentException("Email address was an invalid format");
+
+            _email = groups[1].Value;
+
+            _displayName = string.Empty;
+
+            if (groups[2].Success)
+            {
+                _displayName = groups[2].Value;
+            }
+
         }
 
         public string Email { get {  return _email; }  }

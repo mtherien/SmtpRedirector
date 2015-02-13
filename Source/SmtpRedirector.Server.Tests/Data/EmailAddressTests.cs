@@ -22,6 +22,7 @@ namespace SmtpRedirector.Server.Tests.Data
 
             // Assert
             Assert.AreEqual("mytest@test.com", emailAddress.Email);
+            Assert.AreEqual(string.Empty,emailAddress.DisplayName);
         }
 
         [TestMethod]
@@ -43,6 +44,19 @@ namespace SmtpRedirector.Server.Tests.Data
             }
 
             Assert.IsTrue(exceptionThrown,"Exception was not thrown");
+        }
+
+        [TestMethod]
+        public void Constructor_EmailAddressWithDisplayName_ParsesCorrectly()
+        {
+            // Arrange
+            var testEmail = "<mytest@test.com> First Last";
+
+            // Act
+            var emailAddress = new EmailAddress(testEmail);
+
+            // Assert
+            Assert.AreEqual("First Last", emailAddress.DisplayName);
             
         }
     }
