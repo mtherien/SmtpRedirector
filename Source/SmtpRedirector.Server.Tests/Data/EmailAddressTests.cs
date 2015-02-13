@@ -23,5 +23,27 @@ namespace SmtpRedirector.Server.Tests.Data
             // Assert
             Assert.AreEqual("mytest@test.com", emailAddress.Email);
         }
+
+        [TestMethod]
+        public void Constructor_EmailAddressNoBrackets_ThrowsArgumentException()
+        {
+            // Arrange
+            var testEmail = "mytest@test.com";
+            var exceptionThrown = false;
+
+            try
+            {
+                // Act
+                var emailAddress = new EmailAddress(testEmail);
+            }
+            catch (ArgumentException)
+            {
+                // Assert
+                exceptionThrown = true;
+            }
+
+            Assert.IsTrue(exceptionThrown,"Exception was not thrown");
+            
+        }
     }
 }

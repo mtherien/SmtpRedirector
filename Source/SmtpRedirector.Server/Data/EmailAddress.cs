@@ -1,4 +1,6 @@
-﻿namespace SmtpRedirector.Server.Data
+﻿using System;
+
+namespace SmtpRedirector.Server.Data
 {
     public class EmailAddress
     {
@@ -16,8 +18,10 @@
             {
                 _email = emailString.Trim().TrimStart('<').TrimEnd('>');
                 _displayName = string.Empty;
+                return;
             }
             
+            throw new ArgumentException("Email address was an invalid format");
         }
 
         public string Email { get {  return _email; }  }
