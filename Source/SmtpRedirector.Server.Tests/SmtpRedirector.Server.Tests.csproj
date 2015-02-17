@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Data\EmailAddressTests.cs" />
     <Compile Include="Smtp\MailHandlerTests.cs" />
+    <Compile Include="Smtp\SmtpCommandTests.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

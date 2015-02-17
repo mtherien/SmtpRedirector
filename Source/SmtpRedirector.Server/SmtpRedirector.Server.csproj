@@ -68,17 +68,24 @@
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\IMailHandler.cs" />
     <Compile Include="Interfaces\ISmtpConfiguration.cs" />
+    <Compile Include="Interfaces\ISmtpSocketClient.cs" />
     <Compile Include="Interfaces\ISocketClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Smtp\ISmtpClientSession.cs" />
     <Compile Include="Smtp\ISmtpListener.cs" />
     <Compile Include="Smtp\MailHandler.cs" />
+    <Compile Include="Smtp\ParseResult.cs" />
+    <Compile Include="Smtp\SmtpArgument.cs" />
+    <Compile Include="Smtp\SmtpArgumentName.cs" />
+    <Compile Include="Smtp\SmtpCommand.cs" />
     <Compile Include="Smtp\SmtpConfiguration.cs" />
     <Compile Include="Smtp\SmtpErrorException.cs" />
     <Compile Include="Smtp\SmtpListener.cs" />
     <Compile Include="Smtp\SmtpClientSession.cs" />
     <Compile Include="Smtp\SmtpProcessInfo.cs" />
     <Compile Include="Smtp\SmtpResponseCodes.cs" />
+    <Compile Include="Smtp\SmtpVerb.cs" />
+    <Compile Include="Sockets\SmtpSocketClient.cs" />
     <Compile Include="Sockets\TcpSocketClient.cs" />
   </ItemGroup>
   <ItemGroup>
