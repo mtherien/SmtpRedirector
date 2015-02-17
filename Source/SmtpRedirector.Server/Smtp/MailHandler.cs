@@ -27,10 +27,17 @@ namespace SmtpRedirector.Server.Smtp
 
         public void StartMailRequest(string mailCommandParameters, ISocketClient client)
         {
+            if (!mailCommandParameters.StartsWith("FROM:", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new SmtpErrorException(ResponseCodes.SmtpResponseCode.SyntaxErrorInCommandArguments, "FROM: not included");
+            }
+
+            var fromAddress = mailCommandParameters.Substring(5);
+
             EmailAddress emailAddress = null;
             try
             {
-                emailAddress = new EmailAddress(mailCommandParameters);
+                emailAddress = new EmailAddress(fromAddress);
             }
             catch (ArgumentException argumentException)
             {

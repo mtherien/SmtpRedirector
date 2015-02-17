@@ -74,6 +74,7 @@
     <Compile Include="Smtp\ISmtpListener.cs" />
     <Compile Include="Smtp\MailHandler.cs" />
     <Compile Include="Smtp\SmtpConfiguration.cs" />
+    <Compile Include="Smtp\SmtpErrorException.cs" />
     <Compile Include="Smtp\SmtpListener.cs" />
     <Compile Include="Smtp\SmtpClientSession.cs" />
     <Compile Include="Smtp\SmtpProcessInfo.cs" />
