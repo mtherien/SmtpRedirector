@@ -12,16 +12,16 @@ namespace SmtpRedirector.Server.Sockets
 {
     public class SmtpSocketClient : ISmtpSocketClient
     {
-        private readonly TcpSocketClient _tcpSocketClient;
+        private readonly ISocketClient _socketClient;
 
-        public SmtpSocketClient(TcpClient tcpClient )
+        public SmtpSocketClient(ISocketClient socketClient)
         {
-            _tcpSocketClient = new TcpSocketClient(tcpClient);
+            _socketClient = socketClient;
         }
 
         public string Read()
         {
-            var dataRead = _tcpSocketClient.Read();
+            var dataRead = _socketClient.Read();
             CheckDataForCommand(dataRead);
             return dataRead;
         }
@@ -37,24 +37,24 @@ namespace SmtpRedirector.Server.Sockets
 
         public string Read(string terminator)
         {
-            var dataRead = _tcpSocketClient.Read(terminator);
+            var dataRead = _socketClient.Read(terminator);
             CheckDataForCommand(dataRead);
             return dataRead;
         }
 
         public void Write(string data)
         {
-            _tcpSocketClient.Write(data);
+            _socketClient.Write(data);
         }
 
         public void Close()
         {
-            _tcpSocketClient.Close();
+            _socketClient.Close();
         }
 
         public IPEndPoint EndPoint
         {
-            get { return _tcpSocketClient.EndPoint; }
+            get { return _socketClient.EndPoint; }
         }
 
         public SmtpCommand LastCommand { private set; get; }

@@ -56,6 +56,7 @@
     <Compile Include="Data\EmailAddressTests.cs" />
     <Compile Include="Smtp\MailHandlerTests.cs" />
     <Compile Include="Smtp\SmtpCommandTests.cs" />
+    <Compile Include="Sockets\SmtpSocketClientTests.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -68,6 +69,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
