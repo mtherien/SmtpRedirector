@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using SmtpRedirector.Server.Interfaces;
 
 namespace SmtpRedirector.Server.Smtp
@@ -58,7 +59,7 @@ namespace SmtpRedirector.Server.Smtp
 
             _logger.Info("{0} - Connection from {1} ({2})", _sessionId, _client.EndPoint, _client.HostName);
 
-            _client.Write("220 localhost -- SMTP Redirector Server");
+            _client.Write(string.Format("220 {0} -- SMTP Redirector Server",Dns.GetHostName()));
             string strMessage;
 
             while (true)
@@ -81,7 +82,7 @@ namespace SmtpRedirector.Server.Smtp
                 switch (_client.LastCommand.Verb)
                 {
                     case SmtpVerb.Quit:
-                        _logger.Info("{0} - Connection from {1} terminated by client", _sessionId, _client.EndPoint);
+                        _logger.Info("{0} - Connection from {1} ({2}) terminated by client", _sessionId, _client.EndPoint, _client.HostName);
                         _client.Close();
                         break;
                     case SmtpVerb.ExtendedHello:
