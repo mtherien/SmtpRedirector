@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using SmtpRedirector.Server.Data;
 using SmtpRedirector.Server.Interfaces;
 
 namespace SmtpRedirector.Server.Smtp
@@ -85,6 +86,7 @@ namespace SmtpRedirector.Server.Smtp
                     case SmtpVerb.Quit:
                         _logger.Info("{0} - Connection from {1} ({2}) terminated by client", _sessionId, _client.EndPoint, _client.HostName);
                         _client.Close();
+                        return;
                         break;
                     case SmtpVerb.ExtendedHello:
                         HandleExtendedHello(_client.LastCommand.Arguments);
@@ -124,7 +126,17 @@ namespace SmtpRedirector.Server.Smtp
                 _client.Write("503 HELO/EHLO Command not issued");
                 return;
             }
-            _mailHandler.GetMailMessage(commandArguments.ToArray(), _client);
+
+            MailMessage message;
+            try
+            {
+                message = _mailHandler.GetMailMessage(commandArguments.ToArray(), _client);
+            }
+            catch (SmtpErrorException smtpErrorException)
+            {
+                _client.Write(smtpErrorException.SMTPResponse);
+                _logger.Error("Error getting mail message: {0}",smtpErrorException.SMTPResponse);
+            }
             _client.ClearLastCommand();
         }
 
@@ -136,19 +148,21 @@ namespace SmtpRedirector.Server.Smtp
 
         private void HandleHello(IEnumerable<SmtpArgument> commandArguments)
         {
-            var hostName = commandArguments.FirstOrDefault(m => m.Argument == SmtpArgumentName.Sp);
+            var hostName = commandArguments.GetValue(SmtpArgumentName.Sp);
+
             _client.Write(string.Format("250 Hello {0} ([{1}]), nice to meet you.", 
-                hostName.Value, _client.EndPoint.Address));
+                hostName, _client.EndPoint.Address));
             _helloGiven = true;
             _client.ClearLastCommand();
         }
 
         private void HandleExtendedHello(IEnumerable<SmtpArgument> commandArguments)
         {
-            var hostName = commandArguments.FirstOrDefault(m => m.Argument == SmtpArgumentName.Sp);
+            var hostName = commandArguments.GetValue(SmtpArgumentName.Sp);
+
             _helloGiven = true;
             _client.Write(string.Format("250 Hello {0} ([{1}]), nice to meet you.", 
-                hostName.Value, _client.EndPoint.Address));
+                hostName, _client.EndPoint.Address));
             _client.Write("250-VRFY");
             _client.Write("250-HELP");
             _client.Write("250-MAIL");

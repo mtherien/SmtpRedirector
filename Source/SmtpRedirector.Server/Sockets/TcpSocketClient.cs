@@ -63,7 +63,8 @@ namespace SmtpRedirector.Server.Sockets
                 readString.Append(newData);
             }
 
-            return readString.ToString();
+            var resultString = readString.ToString();
+            return resultString.Substring(0, resultString.Length - terminator.Length);
         }
 
         public void Write(string strMessage)

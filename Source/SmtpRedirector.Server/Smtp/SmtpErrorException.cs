@@ -35,7 +35,7 @@ namespace SmtpRedirector.Server.Smtp
 
         public string SMTPResponse
         {
-            get { return string.Format("{0} {1}", ResponseCode, MessageText); }
+            get { return string.Format("{0:D} {1}", ResponseCode, MessageText); }
         }
     }
 }

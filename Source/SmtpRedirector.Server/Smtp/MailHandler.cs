@@ -46,25 +46,56 @@ namespace SmtpRedirector.Server.Smtp
 
         internal MailMessage ProcessMailCommands(ISmtpSocketClient client, MailMessage mailMessage)
         {
-            while (true)
-            {
-                client.ClearLastCommand();
-                var lastData = client.Read("\r\n");
+            client.Write("250 OK");
+            string lastData = "";
 
-                if (lastData == ".")
-                {
-                    break;
-                }
+            bool hasRecipient = false;
+
+            while (lastData != ".")
+            {
+                
+                client.ClearLastCommand();
+                lastData = client.Read("\r\n");
 
                 if (client.LastCommand == null)
                 {
                     continue;
+                }
+
+                switch (client.LastCommand.Verb)
+                {
+                    case SmtpVerb.Recipient:
+                        if (AddRecipient(client.LastCommand.Arguments.ToArray(), mailMessage))
+                        {
+                            hasRecipient = true;
+                        }
+                        break;
+                    case SmtpVerb.Data:
+                        if (!hasRecipient)
+                        {
+                            client.Write("554 no valid recipients");
+                            break;
+                        }
+                        
+                        client.Write("354 Ready to recieve data");
+                        ProcessData(client, mailMessage);
+                        return mailMessage;
+                        break;
                 }
             }
 
             return mailMessage;
         }
 
+        private void ProcessData(ISmtpSocketClient client, MailMessage mailMessage)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool AddRecipient(SmtpArgument[] arguments, MailMessage mailMessage)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 

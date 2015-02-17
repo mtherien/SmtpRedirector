@@ -42,9 +42,22 @@ namespace SmtpRedirector.Console
             lock (_lock)
             {
                 var message = string.Format(messageFormatToLog, messageArguments);
-                System.Console.Error.WriteLine("{0:yy-MM-dd HH:mm:ss.ffff} - {1}\n\r{2}", 
-                    DateTime.Now, message, exception);
+                if (exception == null)
+                {
+                    System.Console.Error.WriteLine("{0:yy-MM-dd HH:mm:ss.ffff} - {1}",
+                        DateTime.Now, message);
+                }
+                else
+                {
+                    System.Console.Error.WriteLine("{0:yy-MM-dd HH:mm:ss.ffff} - {1}\n\r{2}",
+                        DateTime.Now, message, exception);
+                }
             }
+        }
+
+        public void Error(string messageFormat, params object[] messageArguments)
+        {
+            Error(null,messageFormat,messageArguments);
         }
     }
 }
