@@ -59,5 +59,45 @@ namespace SmtpRedirector.Server.Tests.Data
             Assert.AreEqual("First Last", emailAddress.DisplayName);
             
         }
+
+        [TestMethod]
+        public void Constructor_EmailAddressWithoutDomain_ThrowsArgumentException()
+        {
+            // Arrange
+            var testEmail = "<test>";
+            var exceptionThrown = false;
+
+            try
+            {
+                // Act
+                var emailAddress = new EmailAddress(testEmail);
+            }
+            catch (ArgumentException)
+            {
+                exceptionThrown = true;
+            }
+
+            Assert.IsTrue(exceptionThrown,"Exception not thrown");
+        }
+
+        [TestMethod]
+        public void Constructor_EmailAddressWithoutDomainSuffix_ThrowsArgumentException()
+        {
+            // Arrange
+            var testEmail = "<test@test>";
+            var exceptionThrown = false;
+
+            try
+            {
+                // Act
+                var emailAddress = new EmailAddress(testEmail);
+            }
+            catch (ArgumentException)
+            {
+                exceptionThrown = true;
+            }
+
+            Assert.IsTrue(exceptionThrown, "Exception not thrown");
+        }
     }
 }
