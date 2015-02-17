@@ -5,5 +5,6 @@ namespace SmtpRedirector.Server.Interfaces
     public interface ISmtpSocketClient : ISocketClient
     {
         SmtpCommand LastCommand { get; }
+        void ClearLastCommand();
     }
 }

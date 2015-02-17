@@ -112,6 +112,7 @@ namespace SmtpRedirector.Server.Smtp
         private void HandleHelp()
         {
             _client.Write("250 OK");
+            _client.ClearLastCommand();
         }
 
         private void HandleMail(IEnumerable<SmtpArgument> commandArguments)
@@ -122,11 +123,13 @@ namespace SmtpRedirector.Server.Smtp
                 return;
             }
             _mailHandler.StartMailRequest(commandArguments, _client);
+            _client.ClearLastCommand();
         }
 
         private void HandleReset()
         {
             _client.Write("250 OK");
+            _client.ClearLastCommand();
         }
 
         private void HandleHello(IEnumerable<SmtpArgument> commandArguments)
@@ -135,6 +138,7 @@ namespace SmtpRedirector.Server.Smtp
             _client.Write(string.Format("250 Hello {0} ([{1}]), nice to meet you.", 
                 hostName.Value, _client.EndPoint.Address));
             _helloGiven = true;
+            _client.ClearLastCommand();
         }
 
         private void HandleExtendedHello(IEnumerable<SmtpArgument> commandArguments)
@@ -148,6 +152,7 @@ namespace SmtpRedirector.Server.Smtp
             _client.Write("250-MAIL");
             _client.Write("250-RSET");
             _client.Write("250 NOOP");
+            _client.ClearLastCommand();
         }
     }
 }

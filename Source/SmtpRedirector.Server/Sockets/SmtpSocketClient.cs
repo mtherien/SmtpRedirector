@@ -58,5 +58,9 @@ namespace SmtpRedirector.Server.Sockets
         }
 
         public SmtpCommand LastCommand { private set; get; }
+        public void ClearLastCommand()
+        {
+            LastCommand = null;
+        }
     }
 }
