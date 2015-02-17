@@ -46,7 +46,14 @@ namespace SmtpRedirector.Server.Sockets
 
         public string Read(string terminator)
         {
-            throw new NotImplementedException();
+            var readString = new StringBuilder();
+            while (!readString.ToString().EndsWith(terminator))
+            {
+                var newData = Read();
+                readString.Append(newData);
+            }
+
+            return readString.ToString();
         }
 
         public void Write(string strMessage)

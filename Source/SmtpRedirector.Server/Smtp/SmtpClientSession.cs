@@ -65,7 +65,7 @@ namespace SmtpRedirector.Server.Smtp
             {
                 try
                 {
-                    strMessage = _client.Read();
+                    strMessage = _client.Read("\r\n");
                 }
                 catch (Exception e)
                 {
