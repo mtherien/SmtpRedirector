@@ -18,7 +18,7 @@ namespace SmtpRedirector.Server.Smtp
 {
     public interface ISmtpClientSession
     {
-        Guid Init(ISocketClient client, ISmtpConfiguration configuration);
+        Guid Init(ISmtpSocketClient client, ISmtpConfiguration configuration);
         void HandleSession();
     }
 }

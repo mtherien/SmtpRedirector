@@ -13,6 +13,8 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using SmtpRedirector.Server.Interfaces;
 
 namespace SmtpRedirector.Server.Smtp
@@ -20,7 +22,7 @@ namespace SmtpRedirector.Server.Smtp
     public class SmtpClientSession : ISmtpClientSession
     {
         private ISmtpConfiguration _configuration;
-        private ISocketClient _client;
+        private ISmtpSocketClient _client;
         private readonly ILogger _logger;
         private readonly IMailHandler _mailHandler;
         private Guid _sessionId;
@@ -33,7 +35,7 @@ namespace SmtpRedirector.Server.Smtp
         }
 
 
-        public Guid Init(ISocketClient client, ISmtpConfiguration configuration)
+        public Guid Init(ISmtpSocketClient client, ISmtpConfiguration configuration)
         {
             if (client == null) throw new ArgumentNullException("client");
             if (configuration == null) throw new ArgumentNullException("configuration");
@@ -73,38 +75,34 @@ namespace SmtpRedirector.Server.Smtp
 
                 if (strMessage.Length <=0) continue;
 
-                var commandParts = strMessage.Split(new char[] {' '}, 2);
-                var command = commandParts[0];
-                var commandParameter = commandParts.Length > 1
-                    ? commandParts[1]
-                    : string.Empty;
+                if (_client.LastCommand == null) continue;
 
 
-                switch (command)
+                switch (_client.LastCommand.Verb)
                 {
-                    case "QUIT":
+                    case SmtpVerb.Quit:
                         _logger.Info("{0} - Connection from {1} terminated by client", _sessionId, _client.EndPoint);
                         _client.Close();
                         break;
-                    case "EHLO":
-                        HandleExtendedHello(commandParameter);
+                    case SmtpVerb.ExtendedHello:
+                        HandleExtendedHello(_client.LastCommand.Arguments);
                         break;
-                    case "HELO":
-                        HandleHello(commandParameter);
+                    case SmtpVerb.Hello:
+                        HandleHello(_client.LastCommand.Arguments);
                         break;
-                    case "MAIL":
-                        HandleMail(commandParameter);
+                    case SmtpVerb.Mail:
+                        HandleMail(_client.LastCommand.Arguments);
                         break;
-                    case "RSET":
+                    case SmtpVerb.Reset:
                         HandleReset();
                         break;
-                    case "NOOP":
+                    case SmtpVerb.NoOp:
                         _client.Write("250 OK");
                         break;
-                    case "VRFY":
+                    case SmtpVerb.Verify:
                         _client.Write("500 Not implemented");
                         break;
-                    case "HELP":
+                    case SmtpVerb.Help:
                         HandleHelp();
                         break;
                 }
@@ -116,14 +114,14 @@ namespace SmtpRedirector.Server.Smtp
             _client.Write("250 OK");
         }
 
-        private void HandleMail(string commandParameter)
+        private void HandleMail(IEnumerable<SmtpArgument> commandArguments)
         {
             if (!_helloGiven)
             {
                 _client.Write("503 HELO/EHLO Command not issued");
                 return;
             }
-            _mailHandler.StartMailRequest(commandParameter, _client);
+            _mailHandler.StartMailRequest(commandArguments, _client);
         }
 
         private void HandleReset()
@@ -131,16 +129,20 @@ namespace SmtpRedirector.Server.Smtp
             _client.Write("250 OK");
         }
 
-        private void HandleHello(string commandParameter)
+        private void HandleHello(IEnumerable<SmtpArgument> commandArguments)
         {
-            _client.Write(string.Format("250 Hello {0} ([{1}]), nice to meet you.", commandParameter, _client.EndPoint.Address));
+            var hostName = commandArguments.FirstOrDefault(m => m.Argument == SmtpArgumentName.Sp);
+            _client.Write(string.Format("250 Hello {0} ([{1}]), nice to meet you.", 
+                hostName.Value, _client.EndPoint.Address));
             _helloGiven = true;
         }
 
-        private void HandleExtendedHello(string commandParameter)
+        private void HandleExtendedHello(IEnumerable<SmtpArgument> commandArguments)
         {
+            var hostName = commandArguments.FirstOrDefault(m => m.Argument == SmtpArgumentName.Sp);
             _helloGiven = true;
-            _client.Write(string.Format("250 Hello {0} ([{1}]), nice to meet you.", commandParameter, _client.EndPoint.Address));
+            _client.Write(string.Format("250 Hello {0} ([{1}]), nice to meet you.", 
+                hostName.Value, _client.EndPoint.Address));
             _client.Write("250-VRFY");
             _client.Write("250-HELP");
             _client.Write("250-MAIL");

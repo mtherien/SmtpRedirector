@@ -17,13 +17,13 @@ namespace SmtpRedirector.Server.Tests.Smtp
         {
             // Arrange
             var testHandler = new MailHandler();
-            var testCommand = "<test@test.com>";
-            var socketMock = new Moq.Mock<ISocketClient>();
+            var testCommand = SmtpCommand.Parse("MAIL <test@test.com>").Result;
+            var socketMock = new Moq.Mock<ISmtpSocketClient>();
 
             // Act
             try
             {
-                testHandler.StartMailRequest(testCommand, socketMock.Object);
+                testHandler.StartMailRequest(testCommand.Arguments, socketMock.Object);
             }
             catch (SmtpErrorException smtpErrorException)
             {
@@ -42,13 +42,13 @@ namespace SmtpRedirector.Server.Tests.Smtp
         {
             // Arrange
             var testHandler = new MailHandler();
-            var testCommand = "FROM:<jmb>";
-            var socketMock = new Moq.Mock<ISocketClient>();
+            var testCommand = SmtpCommand.Parse("MAIL FROM:<jmb>").Result;
+            var socketMock = new Moq.Mock<ISmtpSocketClient>();
 
             try
             {
                 // Act
-                testHandler.StartMailRequest(testCommand, socketMock.Object);
+                testHandler.StartMailRequest(testCommand.Arguments, socketMock.Object);
             }
             catch (SmtpErrorException smtpErrorException)
             {

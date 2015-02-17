@@ -25,14 +25,14 @@ namespace SmtpRedirector.Server.Smtp
     {
         private MailMessage _mailMessage = null;
 
-        public void StartMailRequest(string mailCommandParameters, ISocketClient client)
+        public void StartMailRequest(IEnumerable<SmtpArgument> mailCommandArguments, ISmtpSocketClient client)
         {
-            if (!mailCommandParameters.StartsWith("FROM:", StringComparison.OrdinalIgnoreCase))
+            if (mailCommandArguments.All(m => m.Argument != SmtpArgumentName.From))
             {
                 throw new SmtpErrorException(ResponseCodes.SmtpResponseCode.SyntaxErrorInCommandArguments, "FROM: not included");
             }
 
-            var fromAddress = mailCommandParameters.Substring(5);
+            var fromAddress = mailCommandArguments.First(m=>m.Argument== SmtpArgumentName.From).Value;
 
             EmailAddress emailAddress = null;
             try

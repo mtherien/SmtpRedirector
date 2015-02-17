@@ -62,7 +62,7 @@ namespace SmtpRedirector.Server.Smtp
                 if (_stopProcessing) break;
 
                 var process = new SmtpClientSession(_logger,_mailHandler);
-                process.Init(new TcpSocketClient(client), _configuration);
+                process.Init(new SmtpSocketClient( new TcpSocketClient(client)), _configuration);
                 StartProcess(process);
             }
         }
