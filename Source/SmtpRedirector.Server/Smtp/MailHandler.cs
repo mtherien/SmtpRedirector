@@ -41,8 +41,7 @@ namespace SmtpRedirector.Server.Smtp
             }
             catch (ArgumentException argumentException)
             {
-                Console.WriteLine(argumentException);
-                throw;
+                throw new SmtpErrorException(ResponseCodes.SmtpResponseCode.RecipientRejected, "Address is invalid", argumentException);
             }
 
             _mailMessage = new MailMessage(emailAddress);

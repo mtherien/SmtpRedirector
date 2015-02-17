@@ -37,13 +37,29 @@ namespace SmtpRedirector.Server.Tests.Smtp
             
         }
 
-        public void StartMailRequest_BadEmail_ThrowsSmtpErrorException()
+        [TestMethod]
+        public void StartMailRequest_BadEmail_ThrowsSmtpErrorRecipientRejected()
         {
             // Arrange
+            var testHandler = new MailHandler();
+            var testCommand = "FROM:<jmb>";
+            var socketMock = new Moq.Mock<ISocketClient>();
 
-            // Act
+            try
+            {
+                // Act
+                testHandler.StartMailRequest(testCommand, socketMock.Object);
+            }
+            catch (SmtpErrorException smtpErrorException)
+            {
+                // Assert
+                Assert.AreEqual(ResponseCodes.SmtpResponseCode.RecipientRejected, 
+                    smtpErrorException.ResponseCode);
+                return;
+            }
 
-            // Assert
+            Assert.Fail("Exception not thrown");
         }
+
     }
 }
