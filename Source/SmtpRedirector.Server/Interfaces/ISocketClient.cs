@@ -23,5 +23,6 @@ namespace SmtpRedirector.Server.Interfaces
         void Write(string data);
         void Close();
         IPEndPoint EndPoint { get; }
+        string HostName { get; }
     }
 }

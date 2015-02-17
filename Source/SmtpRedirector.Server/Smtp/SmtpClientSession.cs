@@ -56,7 +56,7 @@ namespace SmtpRedirector.Server.Smtp
                 throw new Exception("Call Init before HandleSession");
             }
 
-            _logger.Info("{0} - Connection from {1}", _sessionId, _client.EndPoint);
+            _logger.Info("{0} - Connection from {1} ({2})", _sessionId, _client.EndPoint, _client.HostName);
 
             _client.Write("220 localhost -- SMTP Redirector Server");
             string strMessage;

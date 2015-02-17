@@ -57,6 +57,11 @@ namespace SmtpRedirector.Server.Sockets
             get { return _socketClient.EndPoint; }
         }
 
+        public string HostName
+        {
+            get { return _socketClient.HostName; }
+        }
+
         public SmtpCommand LastCommand { private set; get; }
         public void ClearLastCommand()
         {

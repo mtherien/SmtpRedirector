@@ -31,6 +31,16 @@ namespace SmtpRedirector.Server.Sockets
             _tcpClient = tcpClient;
 
             EndPoint = _tcpClient.Client.RemoteEndPoint as IPEndPoint;
+
+            if (EndPoint != null)
+            {
+                var hostEntry = Dns.GetHostEntry(EndPoint.Address);
+                HostName = hostEntry.HostName;
+            }
+            else
+            {
+                HostName = "unknown";
+            }
         }
 
         public string Read()
@@ -71,5 +81,7 @@ namespace SmtpRedirector.Server.Sockets
         }
 
         public IPEndPoint EndPoint { get; private set; }
+
+        public string HostName { get; private set; }
     }
 }
