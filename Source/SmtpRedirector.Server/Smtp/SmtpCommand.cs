@@ -61,31 +61,45 @@ namespace SmtpRedirector.Server.Smtp
         {
             for (int i = 1; i < commandParts.Length; i++)
             {
+                var argumentString = commandParts[i];
+                string argumentValue = null;
+
+                if (argumentString.Contains(':'))
+                {
+                    var argumentStringPair = argumentString.Split(new char[] {':'}, 2);
+                    argumentString = argumentStringPair[0];
+                    argumentValue = argumentStringPair[1];
+                }
+
                 SmtpArgumentName argumentName;
-                switch (commandParts[i].Trim().ToUpper())
+                switch (argumentString.Trim().ToUpper())
                 {
                     case "SP":
                         argumentName= SmtpArgumentName.Sp;
+                        break;
+                    case "FROM":
+                        argumentName = SmtpArgumentName.From;
                         break;
                     default:
                         argumentName = SmtpArgumentName.None;
                         break;
                 }
 
-                var argumentValueIndex = i + 1;
-                string argumentValue = null;
-
-                if (argumentValueIndex == commandParts.Length)
+                if (argumentValue == null)
                 {
-                    // No value
-                    break;
+                    var argumentValueIndex = i + 1;
+
+                    if (argumentValueIndex == commandParts.Length)
+                    {
+                        // No value
+                        break;
+                    }
+
+                    argumentValue = commandParts[argumentValueIndex];
+                    i = argumentValueIndex;
                 }
 
-                argumentValue = commandParts[argumentValueIndex];
-                i = argumentValueIndex;
-
                 yield return new SmtpArgument(argumentName, argumentValue);
-
             }
         }
     }
