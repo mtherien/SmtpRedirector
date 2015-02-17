@@ -36,5 +36,15 @@ namespace SmtpRedirector.Console
                 System.Console.WriteLine("{0:yy-MM-dd HH:mm:ss.ffff} - {1}", DateTime.Now, message);
             }
         }
+
+        public void Error(Exception exception, string messageFormatToLog, params object[] messageArguments)
+        {
+            lock (_lock)
+            {
+                var message = string.Format(messageFormatToLog, messageArguments);
+                System.Console.Error.WriteLine("{0:yy-MM-dd HH:mm:ss.ffff} - {1}\n\r{2}", 
+                    DateTime.Now, message, exception);
+            }
+        }
     }
 }

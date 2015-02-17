@@ -71,6 +71,7 @@ namespace SmtpRedirector.Server.Smtp
                 catch (Exception e)
                 {
                     //a socket error has occured
+                    _logger.Error(e, "Unexcpected exception, client session ending: {0}", e.Message);
                     break;
                 }
 

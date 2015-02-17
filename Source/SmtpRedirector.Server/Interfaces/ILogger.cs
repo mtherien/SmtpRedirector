@@ -21,5 +21,6 @@ namespace SmtpRedirector.Server.Interfaces
     {
         void Info(string format, params object[] parameters);
         void Info(string message);
+        void Error(Exception exception, string messageFormatToLog, params object[] messageArguments);
     }
 }
