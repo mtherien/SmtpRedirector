@@ -13,12 +13,13 @@
 // limitations under the License.
 
 using System.Collections.Generic;
+using SmtpRedirector.Server.Data;
 using SmtpRedirector.Server.Smtp;
 
 namespace SmtpRedirector.Server.Interfaces
 {
     public interface IMailHandler
     {
-        void StartMailRequest(SmtpArgument[] mailCommandArguments, ISmtpSocketClient client);
+        MailMessage GetMailMessage(SmtpArgument[] mailCommandArguments, ISmtpSocketClient client);
     }
 }

@@ -23,16 +23,13 @@ namespace SmtpRedirector.Server.Smtp
 {
     public class MailHandler : IMailHandler
     {
-        private MailMessage _mailMessage = null;
-
-        public void StartMailRequest(SmtpArgument[] mailCommandArguments, ISmtpSocketClient client)
+        public MailMessage GetMailMessage(SmtpArgument[] mailCommandArguments, ISmtpSocketClient client)
         {
-            if (mailCommandArguments.GetValue(SmtpArgumentName.From) == null)
+            var fromAddress = mailCommandArguments.GetValue(SmtpArgumentName.From);
+            if (fromAddress == null)
             {
                 throw new SmtpErrorException(ResponseCodes.SmtpResponseCode.SyntaxErrorInCommandArguments, "FROM: not included");
             }
-
-            var fromAddress = mailCommandArguments.GetValue(SmtpArgumentName.From);
 
             EmailAddress emailAddress = null;
             try
@@ -44,8 +41,30 @@ namespace SmtpRedirector.Server.Smtp
                 throw new SmtpErrorException(ResponseCodes.SmtpResponseCode.RecipientRejected, "Address is invalid", argumentException);
             }
 
-            _mailMessage = new MailMessage(emailAddress);
+            return ProcessMailCommands(client,new MailMessage(emailAddress));
         }
+
+        internal MailMessage ProcessMailCommands(ISmtpSocketClient client, MailMessage mailMessage)
+        {
+            while (true)
+            {
+                client.ClearLastCommand();
+                var lastData = client.Read("\r\n");
+
+                if (lastData == ".")
+                {
+                    break;
+                }
+
+                if (client.LastCommand == null)
+                {
+                    continue;
+                }
+            }
+
+            return mailMessage;
+        }
+
     }
 
 

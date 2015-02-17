@@ -23,7 +23,7 @@ namespace SmtpRedirector.Server.Tests.Smtp
             // Act
             try
             {
-                testHandler.StartMailRequest(testCommand.Arguments.ToArray(), socketMock.Object);
+                testHandler.GetMailMessage(testCommand.Arguments.ToArray(), socketMock.Object);
             }
             catch (SmtpErrorException smtpErrorException)
             {
@@ -48,7 +48,7 @@ namespace SmtpRedirector.Server.Tests.Smtp
             try
             {
                 // Act
-                testHandler.StartMailRequest(testCommand.Arguments.ToArray(), socketMock.Object);
+                testHandler.GetMailMessage(testCommand.Arguments.ToArray(), socketMock.Object);
             }
             catch (SmtpErrorException smtpErrorException)
             {
