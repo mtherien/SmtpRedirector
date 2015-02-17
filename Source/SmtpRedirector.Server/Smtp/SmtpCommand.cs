@@ -44,14 +44,32 @@ namespace SmtpRedirector.Server.Smtp
             return new ParseResult<SmtpCommand>(smtpCommand);
         }
 
-        private static SmtpVerb GetVerb(string commandVerb)
+        public static SmtpVerb GetVerb(string commandString)
         {
-            switch (commandVerb.Trim().ToUpper())
+            switch (commandString.Trim().ToUpper())
             {
                 case "EHLO":
                     return SmtpVerb.ExtendedHello;
                 case "HELO":
                     return SmtpVerb.Hello;
+                case "MAIL":
+                    return SmtpVerb.Mail;
+                case "RCPT":
+                    return SmtpVerb.Recipient;
+                case "DATA":
+                    return SmtpVerb.Data;
+                case "RSET":
+                    return SmtpVerb.Reset;
+                case "VRFY":
+                    return SmtpVerb.Verify;
+                case "EXPN":
+                    return SmtpVerb.Expand;
+                case "HELP":
+                    return SmtpVerb.Help;
+                case "NOOP":
+                    return SmtpVerb.NoOp;
+                case "QUIT":
+                    return SmtpVerb.Quit;
             }
 
             return SmtpVerb.Unsupported;

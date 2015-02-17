@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SmtpRedirector.Server.Smtp;
@@ -74,6 +76,38 @@ namespace SmtpRedirector.Server.Tests.Smtp
             var spArgument = result.FirstOrDefault(m => m.Argument.Equals(SmtpArgumentName.From));
             Assert.IsNotNull(spArgument, "Did not return a From argument");
             Assert.AreEqual("mm@mm.com", spArgument.Value);
+        }
+
+        [TestMethod]
+        public void GetVerb_SupportedCommands_ReturnProperVerb()
+        {
+            // Arrange
+            var testCommands = new KeyValuePair<string,SmtpVerb>[]
+            {
+                new KeyValuePair<string, SmtpVerb>("HELO",SmtpVerb.Hello), 
+                new KeyValuePair<string, SmtpVerb>("EHLO",SmtpVerb.ExtendedHello), 
+                new KeyValuePair<string, SmtpVerb>("MAIL",SmtpVerb.Mail), 
+                new KeyValuePair<string, SmtpVerb>("RCPT",SmtpVerb.Recipient), 
+                new KeyValuePair<string, SmtpVerb>("DATA",SmtpVerb.Data), 
+                new KeyValuePair<string, SmtpVerb>("RSET",SmtpVerb.Reset), 
+                new KeyValuePair<string, SmtpVerb>("VRFY",SmtpVerb.Verify), 
+                new KeyValuePair<string, SmtpVerb>("EXPN",SmtpVerb.Expand), 
+                new KeyValuePair<string, SmtpVerb>("HELP",SmtpVerb.Help), 
+                new KeyValuePair<string, SmtpVerb>("NOOP",SmtpVerb.NoOp), 
+                new KeyValuePair<string, SmtpVerb>("QUIT",SmtpVerb.Quit), 
+            };
+
+            foreach (var commandPair in testCommands)
+            {
+                // Act
+                var resultingVerb = SmtpCommand.GetVerb(commandPair.Key);
+
+                // Assert
+                Assert.AreEqual(commandPair.Value, resultingVerb, 
+                    string.Format("Command string {0} did not return verb {1}", 
+                        commandPair.Key, commandPair.Value));
+            }
+
         }
 
     }
