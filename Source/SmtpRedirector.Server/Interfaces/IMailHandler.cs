@@ -19,6 +19,6 @@ namespace SmtpRedirector.Server.Interfaces
 {
     public interface IMailHandler
     {
-        void StartMailRequest(IEnumerable<SmtpArgument> mailCommandArguments, ISmtpSocketClient client);
+        void StartMailRequest(SmtpArgument[] mailCommandArguments, ISmtpSocketClient client);
     }
 }

@@ -1,4 +1,9 @@
-﻿namespace SmtpRedirector.Server.Smtp
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+
+namespace SmtpRedirector.Server.Smtp
 {
     public class SmtpArgument 
     {
@@ -19,6 +24,16 @@
         public string Value
         {
             get { return _value; }
+        }
+    }
+
+    public static class SmtpArgumentExtensions
+    {
+        public static string GetValue(this IEnumerable<SmtpArgument> arguments, SmtpArgumentName argumentName)
+        {
+            var argument = arguments.FirstOrDefault(m => m.Argument == argumentName);
+
+            return argument == null ? null : argument.Value;
         }
     }
 }
