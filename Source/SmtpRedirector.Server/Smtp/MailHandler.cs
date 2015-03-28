@@ -94,9 +94,9 @@ namespace SmtpRedirector.Server.Smtp
 
         private bool AddRecipient(SmtpArgument[] arguments, MailMessage mailMessage)
         {
-            throw new NotImplementedException();
+            var recipient = new Recipient(arguments[0].Value, RecipientType.To);
+            mailMessage.Recipients.Add(recipient);
+            return true;
         }
     }
-
-
 }

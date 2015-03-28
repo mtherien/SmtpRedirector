@@ -57,7 +57,6 @@
     <Compile Include="Smtp\MailHandlerTests.cs" />
     <Compile Include="Smtp\SmtpCommandTests.cs" />
     <Compile Include="Sockets\SmtpSocketClientTests.cs" />
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

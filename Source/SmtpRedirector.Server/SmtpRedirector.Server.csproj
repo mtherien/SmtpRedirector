@@ -63,6 +63,7 @@
     <Compile Include="Bootstrap.cs" />
     <Compile Include="Data\EmailAddress.cs" />
     <Compile Include="Data\MailMessage.cs" />
+    <Compile Include="Data\Recipient.cs" />
     <Compile Include="Data\SmtpContext.cs" />
     <Compile Include="Data\SmtpContextFactory.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Smtp\ISmtpListener.cs" />
     <Compile Include="Smtp\MailHandler.cs" />
     <Compile Include="Smtp\ParseResult.cs" />
+    <Compile Include="Smtp\RecipientType.cs" />
     <Compile Include="Smtp\SmtpArgument.cs" />
     <Compile Include="Smtp\SmtpArgumentName.cs" />
     <Compile Include="Smtp\SmtpCommand.cs" />

@@ -4,7 +4,7 @@ using Autofac;
 
 namespace SmtpRedirector.Server.Data
 {
-    public class EmailAddress
+    public class EmailAddress 
     {
         private string _email;
         private string _displayName;
@@ -63,5 +63,10 @@ namespace SmtpRedirector.Server.Data
 
         public string Email { get {  return _email; }  }
         public string DisplayName { get { return _displayName; } }
+
+        public override string ToString()
+        {
+            return Email;
+        }
     }
 }
